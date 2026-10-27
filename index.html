@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIツール比較メモ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>AIツール比較メモ</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card" aria-labelledby="form-title">
+      <h2 id="form-title">ツールを追加</h2>
+      <form id="tool-form" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label for="f-name">名前 <span class="req">必須</span></label>
+            <input id="f-name" type="text" maxlength="50" autocomplete="off" aria-describedby="e-name">
+            <p class="error" id="e-name" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="f-monthly">月額（円） <span class="req">必須</span></label>
+            <input id="f-monthly" type="number" inputmode="numeric" min="0" step="1" autocomplete="off" aria-describedby="e-monthly">
+            <p class="error" id="e-monthly" aria-live="polite"></p>
+          </div>
+          <div class="field field-wide">
+            <label for="f-memo">メモ <span class="req">必須</span></label>
+            <input id="f-memo" type="text" maxlength="200" autocomplete="off" aria-describedby="e-memo">
+            <p class="error" id="e-memo" aria-live="polite"></p>
+          </div>
+        </div>
+        <div class="button-row">
+          <button type="submit" class="btn btn-primary" id="btn-submit">追加する</button>
+          <button type="button" class="btn" id="btn-cancel" hidden>編集をやめる</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="list-title">
+      <h2 id="list-title">一覧</h2>
+      <div class="toolbar">
+        <div class="field toolbar-search">
+          <label for="search">検索（名前・メモ）</label>
+          <input id="search" type="search" placeholder="例: 画像" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="sort">並べ替え</label>
+          <select id="sort">
+            <option value="none">登録順</option>
+            <option value="asc">料金が安い順</option>
+            <option value="desc">料金が高い順</option>
+          </select>
+        </div>
+      </div>
+      <div class="button-row">
+        <button type="button" class="btn" id="btn-csv">CSVダウンロード</button>
+        <select id="csv-encoding" class="inline-select" aria-label="CSVの文字コード">
+          <option value="utf8">UTF-8（BOM付き・通常はこちら）</option>
+          <option value="sjis">Shift_JIS（古いExcel向け）</option>
+        </select>
+        <button type="button" class="btn btn-danger-outline" id="btn-reset">初期状態に戻す</button>
+      </div>
+      <label class="check-label" for="csv-protect">
+        <input type="checkbox" id="csv-protect" checked>
+        Excel用: 数字や日付に見える文字（0123、1-2 など）を文字列のまま保つ
+      </label>
+      <p class="hint">ExcelでCSVを開いて文字化けする場合は、文字コードを「Shift_JIS」にしてダウンロードし直してください。Excel以外のソフトで使う場合は、上のチェックを外してください。</p>
+      <p id="summary" class="summary" aria-live="polite"></p>
+      <p id="status" class="status" role="status"></p>
+      <p id="save-warning" class="save-warning" role="alert" hidden>ブラウザに保存できていません。このままページを閉じたり再読み込みしたりすると、内容が消えます。先にCSVでバックアップしてください。</p>
+      <div class="table-wrap" id="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">名前</th><th scope="col" class="num">月額</th><th scope="col">メモ</th><th scope="col">操作</th></tr>
+          </thead>
+          <tbody id="tool-body"></tbody>
+        </table>
+      </div>
+      <p id="empty" class="empty" hidden>表示するツールがありません。</p>
+    </section>
+  </main>
+  <footer class="container site-footer">
+    <small>データはブラウザの localStorage に保存されます。サーバーには送信されません。</small>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
